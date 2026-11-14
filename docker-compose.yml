@@ -3,23 +3,31 @@ services:
     build: .
     ports:
       - "8000:8000"
-    depends_on:
-      - db
     environment:
-      DATABASE_URL: postgresql://user:pass@db:5432/inventory
-    volumes:
-      - ./models:/app/models
+      DATABASE_URL: postgresql+psycopg2://user:tonikr8s@db:5432/inventory
+    depends_on:
+      db:
+        condition: service_healthy
+    restart: unless-stopped
 
   db:
     image: postgres:18
     environment:
+      POSTGRES_DB: inventory
       POSTGRES_USER: user
       POSTGRES_PASSWORD: tonikr8s
-      POSTGRES_DB: inventory
     ports:
-      - "5432:5432"
+      - "5433:5432"
     volumes:
+      # PostgreSQL 18 stores its cluster in a versioned directory under this path.
       - postgres_data:/var/lib/postgresql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+    restart: unless-stopped
 
 volumes:
   postgres_data:
