@@ -16,6 +16,7 @@ async def lifespan(app: FastAPI):
     yield
 
 
+
 app = FastAPI(title="Smart Inventory API", lifespan=lifespan)
 
 @app.get("/")

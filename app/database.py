@@ -8,6 +8,7 @@ DATABASE_URL = os.getenv(
     "postgresql+psycopg2://user:tonikr8s@localhost:5433/inventory",
 )
 
+
 engine = create_engine(DATABASE_URL, pool_pre_ping=True)
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 Base = declarative_base()

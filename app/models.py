@@ -33,4 +33,5 @@ class Inventory(Base):
     min_stock = Column(Integer, default=10)
     max_stock = Column(Integer, default=300)
 
+
     product = relationship("Product", back_populates="inventory")
