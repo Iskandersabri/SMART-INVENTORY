@@ -7,8 +7,8 @@ from sqlalchemy.orm import Session
 from app import models  # noqa: F401
 from app.database import Base, engine, get_db
 
-from app.schemas import ProductCreate
-from app.services import addProductServ
+from app.schemas import ProductCreate, CategoryCreate, InventoryCreate
+from app.services import addProductServ, addCategoryServ, addInventoryServ
 
 
 @asynccontextmanager
@@ -30,3 +30,11 @@ def root():
 @app.post('/Product')
 def addProductRoot(product: ProductCreate, database : Session = Depends(get_db)):
     return addProductServ(productIn= product, databaseIn= database)
+
+@app.post('/Category')
+def addCategoryRoot(category: CategoryCreate, database : Session = Depends(get_db)):
+    return addCategoryServ(categoryIn= category, databaseIn= database)
+
+@app.post('/inventory')
+def addInventoryRoot(inventory: InventoryCreate, database: Session = Depends(get_db)):
+    return addInventoryServ(inventoryIn= inventory, databaseIn= database)

@@ -1,5 +1,5 @@
-from app.schemas import ProductCreate, CategoryCreate
-from app.models import Product, Category
+from app.schemas import ProductCreate, CategoryCreate, InventoryCreate
+from app.models import Product, Category, Inventory
 
 
 def addProduct(product: ProductCreate, database):
@@ -11,4 +11,17 @@ def addProduct(product: ProductCreate, database):
     return new
 
 def addCategory(category : CategoryCreate, database):
-    new = Category()
+    new = Category(name = category.name)
+    database.add(new)
+    database.commit()
+    database.refresh(new)
+
+    return new
+
+def addInventory(inventory : InventoryCreate, database):
+    new = Inventory(product_id= inventory.product_id, quantity= inventory.quantity, min_stock= inventory.min_stock, max_stock= inventory.max_stock)
+    database.add(new)
+    database.commit()
+    database.refresh(new)
+
+    return new
