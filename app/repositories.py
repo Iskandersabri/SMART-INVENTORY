@@ -56,4 +56,8 @@ def deleteInventory(inventory: Inventory, database):
 
     return None
 
-def delete
+def deleteCategory( category : Category, database):
+    database.delete(category)
+    database.commit()
+
+    return None
