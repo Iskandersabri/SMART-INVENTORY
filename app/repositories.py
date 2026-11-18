@@ -1,4 +1,3 @@
-from fastapi import HTTPException
 
 from app.schemas import ProductCreate, CategoryCreate, InventoryCreate
 from app.models import Product, Category, Inventory
@@ -43,6 +42,9 @@ def getInventoryId(id: int, database):
     item = database.query(Inventory).filter(Inventory.id == id).first()
 
     return item
+
+def getInventoryProductId(product_id: int, database):
+    return database.query(Inventory).filter(Inventory.product_id == product_id).first()
 
 def deleteProduct(product: Product, database):
     database.delete(product)

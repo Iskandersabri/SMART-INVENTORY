@@ -1,7 +1,7 @@
 from fastapi import HTTPException
 
 from app.repositories import addProduct, addCategory, addInventory
-from app.repositories import  getProductId, getCategoryId, getInventoryId
+from app.repositories import  getProductId, getCategoryId, getInventoryId, getInventoryProductId
 from app.repositories import deleteProduct, deleteInventory, deleteCategory
 from app.schemas import ProductCreate, CategoryCreate, InventoryCreate
 
@@ -41,7 +41,8 @@ def getInventoryServ(idIn: int, databaseIn):
 def deleteProductServ(idIn: int, databaseIn):
     product = getProductServ(idIn=idIn, databaseIn= databaseIn)
 
-    deleteInventoryServ(idIn= product.id, databaseIn= databaseIn)
+    invId = getInventoryProductId(product_id= product.id, database= databaseIn)
+    deleteInventoryServ(idIn= invId, databaseIn= databaseIn)
     return deleteProduct(product, databaseIn)
 
 def deleteInventoryServ(idIn: int, databaseIn):
