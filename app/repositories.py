@@ -63,3 +63,16 @@ def deleteCategory( category : Category, database):
     database.commit()
 
     return None
+
+def updateProduct( old: Product, new: Product , database):
+    old.name = new.name
+    old.sku = new.sku
+    old.price = new.price
+    old.description = new.description
+    old.category_id = new.category_id
+
+    database.commit()
+    database.refresh(old)
+
+    return old
+

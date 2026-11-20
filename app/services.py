@@ -3,6 +3,7 @@ from fastapi import HTTPException
 from app.repositories import addProduct, addCategory, addInventory
 from app.repositories import  getProductId, getCategoryId, getInventoryId, getInventoryProductId
 from app.repositories import deleteProduct, deleteInventory, deleteCategory
+from app.repositories import updateProduct
 from app.schemas import ProductCreate, CategoryCreate, InventoryCreate
 
 def addProductServ(productIn : ProductCreate, databaseIn):
@@ -55,3 +56,11 @@ def deleteCategoryServ(idIn: int, databaseIn):
 
     return deleteCategory(category= category, database= databaseIn)
 
+
+def updateProductServ( new:ProductCreate, databaseIn):
+    old = getProductId(id= new.id, database= databaseIn)
+
+    if not old:
+            raise HTTPException(status_code=404, detail="Product not found")
+
+    return updateProduct(old= old, new= new, database= databaseIn)

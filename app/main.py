@@ -10,6 +10,7 @@ from app.database import Base, engine, get_db
 from app.schemas import ProductCreate, CategoryCreate, InventoryCreate
 from app.services import addProductServ, addCategoryServ, addInventoryServ
 from app.services import deleteProductServ, deleteCategoryServ, deleteInventoryServ
+from app.services import updateProductServ
 
 
 @asynccontextmanager
@@ -51,4 +52,10 @@ def deleteCategoryRoot(category: int, database: Session = Depends(get_db)):
 @app.delete('/Inventory/{inventory}')
 def deleteInventoryRoot(inventory: int, database: Session = Depends(get_db)):
     return deleteInventoryServ(idIn= inventory, databaseIn=database)
+
+@app.put('/Product/{productId}')
+def updateProductRoot(productId: int, product = ProductCreate,database : Session = Depends(get_db)):
+    product.id = productId
+    return updateProductServ(new= product, databaseIn= database)
+
 
