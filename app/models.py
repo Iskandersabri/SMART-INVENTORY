@@ -25,7 +25,7 @@ class Product(Base):
     inventory = relationship("Inventory", back_populates="product", uselist=False)
 
 class Inventory(Base):
-    __tablename__ = "inventory"
+    __tablename__ = "inventories"
 
     id = Column(Integer, primary_key=True, index=True)
     product_id = Column(Integer, ForeignKey("products.id"), unique=True)
@@ -35,3 +35,36 @@ class Inventory(Base):
 
 
     product = relationship("Product", back_populates="inventory")
+
+class User(Base):
+    __tablename__='users'
+
+    id = Column(Integer, primary_key= True, index = True)
+    first_name= Column(String, nullable= False)
+    last_name= Column(String, nullable= False)
+    email = Column(String, unique= True, index = True, nullable = False)
+    phone= Column(String, unique= True, index= True, nullable = False)
+    password = Column(String, nullable= False)
+
+    type = Column( String(50))
+
+    __maper_args__={'polymorphic_identity':'user',
+                    'polymorphic_on': type}
+
+class Client(User):
+    __tablename__='clients'
+
+    id = Column(Integer, ForeignKey('users.id'), primary_key=True)
+    shipping_address= Column(String, nullable  = True)
+
+    __maper_args__ = {'polymorphic_identity': 'client'}
+
+class Seller(User):
+    __tablename__= 'sellers'
+
+    id = Column(Integer, ForeignKey('users.id'), primary_key=True)
+    store_name = Column(String, nullable = False)
+    store_logo = Column(String, nullable = True)
+
+    __maper_args__ = {'polymorphic_identity' : 'seller'}
+
