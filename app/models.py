@@ -68,3 +68,9 @@ class Seller(User):
 
     __maper_args__ = {'polymorphic_identity' : 'seller'}
 
+class Admin(User):
+    __tablename__ = "admins"
+    id = Column(Integer, ForeignKey("users.id"), primary_key=True)
+    permissions_level = Column(Integer, default=1)
+
+    __mapper_args__ = {"polymorphic_identity": "admin"}
